@@ -133,7 +133,10 @@ sparkR.init <- function(
   } else {
     path <- tempfile(pattern = "backend_port")
     submitOps <- getClientModeSparkSubmitOpts(
-        Sys.getenv("SPARKR_SUBMIT_ARGS", "sparkr-shell"),
+        paste(
+          if (nzchar(master)) paste("--master", master),
+          Sys.getenv("SPARKR_SUBMIT_ARGS", "sparkr-shell")
+        ),
         sparkEnvirMap)
     launchBackend(
         args = path,
